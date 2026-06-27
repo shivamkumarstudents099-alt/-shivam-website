@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Shivam Kumar | High Jumper</title>
+<style>
+  :root{
+    --bg: #0A0A0C;
+    --bg-panel: #14120D;
+    --gold: #D4AF37;
+    --gold-bright: #F4D672;
+    --text: #F5F3EE;
+    --text-dim: #8A8780;
+    --line: #29261E;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    background:var(--bg);
+    color:var(--text);
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+    line-height:1.5;
+    overflow-x:hidden;
+  }
+
+  /* Ambient glow background */
+  .glow{
+    position:fixed;
+    top:-200px; left:50%;
+    width:800px; height:800px;
+    background: radial-gradient(circle, rgba(212,175,55,0.12) 0%, transparent 70%);
+    transform: translateX(-50%);
+    pointer-events:none;
+    z-index:0;
+    animation: pulse 8s ease-in-out infinite;
+  }
+  @keyframes pulse{
+    0%,100%{ opacity:0.6; }
+    50%{ opacity:1; }
+  }
+
+  .gold-line{
+    height:1px;
+    background: linear-gradient(90deg, transparent, var(--gold), transparent);
+  }
+
+  header{
+    position:relative;
+    z-index:1;
+    padding: 90px 24px 60px;
+    max-width: 960px;
+    margin: 0 auto;
+    opacity:0;
+    animation: rise 1s ease forwards;
+  }
+  @keyframes rise{
+    from{ opacity:0; transform: translateY(24px); }
+    to{ opacity:1; transform: translateY(0); }
+  }
+
+  .eyebrow{
+    color: var(--gold);
+    font-size: 12px;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    margin-bottom: 20px;
+    display:flex;
+    align-items:center;
+    gap:10px;
+  }
+  .eyebrow::before{
+    content:'';
+    width: 24px; height:1px;
+    background: var(--gold);
+  }
+
+  h1{
+    font-size: clamp(44px, 9vw, 88px);
+    line-height: 0.95;
+    font-weight: 300;
+    letter-spacing: -1px;
+  }
+  h1 b{
+    font-weight: 700;
+    background: linear-gradient(135deg, var(--gold-bright), var(--gold) 60%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  .subtitle{
+    margin-top: 22px;
+    font-size: 18px;
+    color: var(--text-dim);
+    max-width: 480px;
+  }
+
+  .hero-grid{
+    display:grid;
+    grid-template-columns: 1fr 280px;
+    gap: 40px;
+    margin-top: 50px;
+    align-items:end;
+  }
+  @media (max-width: 720px){ .hero-grid{ grid-template-columns: 1fr; } }
+
+  .photo-frame{
+    aspect-ratio: 3/4;
+    border: 1px solid var(--line);
+    border-radius: 4px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    color: var(--text-dim);
+    font-size: 13px;
+    letter-spacing: 1px;
+    background: linear-gradient(160deg, #181611, #0A0A0C);
+    position:relative;
+    overflow:hidden;
+  }
+  .photo-frame::after{
+    content:'';
+    position:absolute; inset:0;
+    background: linear-gradient(120deg, transparent 40%, rgba(212,175,55,0.08) 50%, transparent 60%);
+    animation: shine 4s ease-in-out infinite;
+  }
+  @keyframes shine{
+    0%{ transform: translateX(-100%); }
+    50%, 100%{ transform: translateX(100%); }
+  }
+
+  .pb-row{
+    display:flex;
+    gap: 44px;
+    flex-wrap: wrap;
+  }
+  .pb{
+    border-left: 1px solid var(--gold);
+    padding-left: 16px;
+  }
+  .pb .num{
+    font-size: 34px;
+    font-weight: 700;
+    color: var(--gold-bright);
+  }
+  .pb .label{
+    font-size: 12px;
+    color: var(--text-dim);
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    margin-top: 2px;
+  }
+
+  section{
+    position:relative;
+    z-index:1;
+    max-width: 960px;
+    margin: 0 auto;
+    padding: 70px 24px;
+  }
+  .section-title{
+    font-size: 12px;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 36px;
+    display:flex;
+    align-items:center;
+    gap:10px;
+  }
+  .section-title::before{
+    content:'';
+    width: 24px; height:1px;
+    background: var(--gold);
+  }
+
+  .record-grid{
+    display:grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1px;
+    background: var(--line);
+    border: 1px solid var(--line);
+  }
+  @media (max-width: 720px){ .record-grid{ grid-template-columns: repeat(2, 1fr); } }
+  .record-cell{
+    background: var(--bg-panel);
+    padding: 28px 20px;
+    transition: background 0.3s ease, transform 0.3s ease;
+  }
+  .record-cell:hover{
+    background: #1C180F;
+    transform: translateY(-3px);
+  }
+  .record-cell .count{
+    font-size: 40px;
+    font-weight: 700;
+    color: var(--gold-bright);
+  }
+  .record-cell .what{
+    font-size: 12px;
+    color: var(--text-dim);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-top: 6px;
+  }
+
+  .about p{
+    color: var(--text-dim);
+    max-width: 600px;
+    font-size: 17px;
+  }
+  .about strong{ color: var(--gold-bright); font-weight: 600; }
+
+  footer{
+    position:relative; z-index:1;
+    max-width: 960px;
+    margin: 0 auto;
+    padding: 50px 24px 80px;
+    display:flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 20px;
+  }
+  .btn{
+    background: linear-gradient(135deg, var(--gold-bright), var(--gold));
+    color: #0A0A0C;
+    padding: 14px 28px;
+    border-radius: 2px;
+    font-weight: 700;
+    text-decoration: none;
+    font-size: 14px;
+    letter-spacing: 0.5px;
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+  }
+  .btn:hover{
+    transform: translateY(-2px);
+    box-shadow: 0 10px 30px rgba(212,175,55,0.25);
+  }
+  .handle{
+    color: var(--text-dim);
+    font-size: 14px;
+    letter-spacing: 0.5px;
+  }
+  .handle b{ color: var(--gold); }
+
+  /* Gallery tabs */
+  .tabs{
+    display:flex;
+    gap: 4px;
+    margin-bottom: 30px;
+    border-bottom: 1px solid var(--line);
+  }
+  .tab-btn{
+    background:none;
+    border:none;
+    color: var(--text-dim);
+    font-family: inherit;
+    font-size: 13px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    padding: 14px 22px;
+    cursor: pointer;
+    position: relative;
+    transition: color 0.25s ease;
+  }
+  .tab-btn::after{
+    content:'';
+    position:absolute;
+    bottom:-1px; left:0;
+    width:100%; height:2px;
+    background: var(--gold);
+    transform: scaleX(0);
+    transition: transform 0.3s ease;
+  }
+  .tab-btn.active{ color: var(--gold-bright); }
+  .tab-btn.active::after{ transform: scaleX(1); }
+
+  .tab-panel{ display:none; animation: rise 0.5s ease forwards; }
+  .tab-panel.active{ display:grid; }
+
+  .gallery-grid{
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+  }
+  @media (max-width: 720px){ .gallery-grid{ grid-template-columns: repeat(2, 1fr); } }
+
+  .gallery-item{
+    aspect-ratio: 1;
+    border: 1px solid var(--line);
+    border-radius: 4px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    color: var(--text-dim);
+    font-size: 12px;
+    letter-spacing: 1px;
+    background: linear-gradient(160deg, #181611, #0A0A0C);
+    cursor:pointer;
+    transition: border-color 0.25s ease, transform 0.25s ease;
+  }
+  .gallery-item:hover{
+    border-color: var(--gold);
+    transform: translateY(-3px);
+  }
+
+  .article-list{
+    grid-template-columns: 1fr;
+    gap: 1px;
+    background: var(--line);
+    border: 1px solid var(--line);
+  }
+  .article-item{
+    background: var(--bg-panel);
+    padding: 22px 24px;
+    display:flex;
+    justify-content: space-between;
+    align-items:center;
+    cursor:pointer;
+    transition: background 0.25s ease;
+  }
+  .article-item:hover{ background: #1C180F; }
+  .article-item .title{ color: var(--text); font-size: 15px; }
+  .article-item .date{ color: var(--text-dim); font-size: 13px; }
+</style>
+</head>
+<body>
+
+  <div class="glow"></div>
+  <div class="gold-line"></div>
+
+  <header>
+    <div class="eyebrow">Federation Level &middot; High Jump</div>
+    <h1>Shivam<br><b>Kumar.</b></h1>
+
+    <div class="hero-grid">
+      <div>
+        <p class="subtitle">Jharkhand-based high jumper competing at the federation level. Class 11 PCB student, building toward financial independence through AI and online business.</p>
+
+        <div class="pb-row" style="margin-top:40px;">
+          <div class="pb">
+            <div class="num">1.80m</div>
+            <div class="label">Personal Best</div>
+          </div>
+          <div class="pb">
+            <div class="num">17</div>
+            <div class="label">Total Competitions</div>
+          </div>
+          <div class="pb">
+            <div class="num">JH</div>
+            <div class="label">Jharkhand</div>
+          </div>
+        </div>
+      </div>
+      <div class="photo-frame">Photo placeholder</div>
+    </div>
+  </header>
+
+  <div class="gold-line"></div>
+
+  <section>
+    <div class="section-title">Competition Record</div>
+    <div class="record-grid">
+      <div class="record-cell">
+        <div class="count">1</div>
+        <div class="what">Federation Level</div>
+      </div>
+      <div class="record-cell">
+        <div class="count">2</div>
+        <div class="what">National Level</div>
+      </div>
+      <div class="record-cell">
+        <div class="count">5</div>
+        <div class="what">State Level</div>
+      </div>
+      <div class="record-cell">
+        <div class="count">9</div>
+        <div class="what">District Level</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="about">
+    <div class="section-title">About</div>
+    <p>Training out of Jharkhand, competing up to the federation level in high jump. Alongside athletics, currently in Class 11 (PCB), and learning <strong>AI, automation, and online business skills</strong> with the goal of building financial independence through ethical online ventures.</p>
+  </section>
+
+  <div class="gold-line"></div>
+
+  <section>
+    <div class="section-title">Gallery</div>
+
+    <div class="tabs">
+      <button class="tab-btn active" onclick="showTab('photos', this)">Photos</button>
+      <button class="tab-btn" onclick="showTab('videos', this)">Videos</button>
+      <button class="tab-btn" onclick="showTab('articles', this)">Articles</button>
+    </div>
+
+    <div id="photos" class="tab-panel gallery-grid active">
+      <div class="gallery-item">Photo 1</div>
+      <div class="gallery-item">Photo 2</div>
+      <div class="gallery-item">Photo 3</div>
+      <div class="gallery-item">Photo 4</div>
+      <div class="gallery-item">Photo 5</div>
+      <div class="gallery-item">Photo 6</div>
+    </div>
+
+    <div id="videos" class="tab-panel gallery-grid">
+      <div class="gallery-item">Video 1</div>
+      <div class="gallery-item">Video 2</div>
+      <div class="gallery-item">Video 3</div>
+    </div>
+
+    <div id="articles" class="tab-panel article-list">
+      <div class="article-item">
+        <span class="title">How I improved my approach run technique</span>
+        <span class="date">Coming soon</span>
+      </div>
+      <div class="article-item">
+        <span class="title">Balancing PCB studies with national-level training</span>
+        <span class="date">Coming soon</span>
+      </div>
+      <div class="article-item">
+        <span class="title">My road to the federation level</span>
+        <span class="date">Coming soon</span>
+      </div>
+    </div>
+  </section>
+
+  <div class="gold-line"></div>
+
+  <footer>
+    <a href="https://www.instagram.com/lost.ino.rbit/?hl=en" class="btn">Follow the Journey</a>
+    <div class="handle">Instagram &middot; <b>@lost.ino.rbit</b></div>
+  </footer>
+
+  <script>
+    function showTab(id, btn){
+      document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+      document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+      document.getElementById(id).classList.add('active');
+      btn.classList.add('active');
+    }
+  </script>
+
+</body>
+</html>
